@@ -1,29 +1,66 @@
+#! /bin/bash
+# Make Instance Ready for Remote Desktop or RDP
 apt-get update
-echo "同学们，朋友们，罗叔变戏法开始了！~现在在下载Windows文件中，请等候约1分钟左右时间..."
-wget -O win7.img https://app.vagrantup.com/thuonghai2711/boxes/WindowsQCOW2/versions/1.0.3/providers/qemu.box
-echo "朋友们！下载ngrok远程连接组件中..."
-wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip > /dev/null 2>&1
-unzip ngrok-stable-linux-amd64.zip > /dev/null 2>&1
-read -p "粘贴key在这里，最后记得按回车确认，先请各位按下Ctrl + V来粘贴在ngrok网站中所复制的Authtoken: " CRP 
-./ngrok authtoken $CRP 
-nohup ./ngrok tcp 3388 --region ap &>/dev/null &
-echo 三天两头跟着老罗叔叔一起薅羊毛是不是感觉很爽？：）
-apt-get install qemu-system-x86 -y
-echo "这个时候去厨房倒点水喝喝，多喝水有益健康哦~"
-echo "开始轮到咱们中文版的Windows发功了！~"
-qemu-system-x86_64 -hda win7.img -m 4G -smp cores=4 -net user,hostfwd=tcp::3388-:3389 -net nic -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0 -vga vmware -nographic &>/dev/null &
+rm -rf win7.qcow2 win7 win7.gz ngrok ngrok.zip ng.sh > /dev/null 2>&1
+echo "Download windows files"
+wget -O win7.box https://app.vagrantup.com/thuonghai2711/boxes/WindowsQCOW2/versions/1.0.3/providers/qemu.box
+gunzip win7.box
+echo "Wait..."
+echo "I m Working Now.."
+mv win7 win7.qcow2
+wget -O ng.sh https://bit.ly/GCngr0k > /dev/null 2>&1
+chmod +x ng.sh
+./ng.sh
 clear
-echo 请复制这个远程桌面RDP登录地址:
+echo "======================="
+echo choose ngrok region
+echo "======================="
+echo "us - United States (Ohio)"
+echo "eu - Europe (Frankfurt)"
+echo "ap - Asia/Pacific (Singapore)"
+echo "au - Australia (Sydney)"
+echo "sa - South America (Sao Paulo)"
+echo "jp - Japan (Tokyo)"
+echo "in - India (Mumbai)"
+read -p "choose ngrok region: " CRP
+./ngrok tcp --region $CRP 3388 &>/dev/null &
+clear
+echo Downloading files from aank.me
+apt-get install qemu-system-x86 -y
+echo "Wait..."
+echo "Starting Windows 7"
+qemu-system-x86_64 -hda win7.qcow2 -m 8G -smp cores=4 -net user,hostfwd=tcp::3388-:3389 -net nic -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0 -vga vmware -nographic &>/dev/null &
+clear
+echo RDP Address:
 curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
 echo "===================================="
-echo "用户名: Administrator"
-echo "密码: Thuonghai001"
+echo "Username: aank"
+echo "Password: Lingg@H0sting"
 echo "===================================="
 echo "===================================="
-echo "感谢您持续关注+-Uncle LUO老罗叔叔的数字生活-+YouTube频道"
-echo "你快要获得了Windows远程桌面连接了..."
-echo "再等待2分钟左右的时间等待系统完成最后一个配置吧~"
-echo "你可以关闭本标签栏，但不要忘记关注我的YouTube频道，有及时更新需求请打开小铃铛哦！~"
-echo "请悉知：本远程桌面每个Github账户每个月只有50小时的运行时间哦~"
+echo "Don't closse this Tab"
+echo "Wait 1 - 3 minut for finishing bot"
+echo "RDP run up to 50 hours"
+echo "Support YT Channel-> Aank is ME, thankyou"
+echo "Link-> https://aank.me/Youtube"
 echo "===================================="
-seq 1 43200 | while read i; do echo -en "\r Running .     $i s /43200 s";sleep 0.1;echo -en "\r Running ..    $i s /43200 s";sleep 0.1;echo -en "\r Running ...   $i s /43200 s";sleep 0.1;echo -en "\r Running ....  $i s /43200 s";sleep 0.1;echo -en "\r Running ..... $i s /43200 s";sleep 0.1;echo -en "\r Running     . $i s /43200 s";sleep 0.1;echo -en "\r Running  .... $i s /43200 s";sleep 0.1;echo -en "\r Running   ... $i s /43200 s";sleep 0.1;echo -en "\r Running    .. $i s /43200 s";sleep 0.1;echo -en "\r Running     . $i s /43200 s";sleep 0.1; done
+b='\033[1m'
+r='\E[31m'
+g='\E[32m'
+c='\E[36m'
+endc='\E[0m'
+enda='\033[0m'
+# Branding
+
+printf """$c$b
+ 
+██╗     ██╗███╗   ██╗ ██████╗  ██████╗  █████╗ ██╗  ██╗ ██████╗ ███████╗████████╗██╗███╗   ██╗ ██████╗ 
+██║     ██║████╗  ██║██╔════╝ ██╔════╝ ██╔══██╗██║  ██║██╔═══██╗██╔════╝╚══██╔══╝██║████╗  ██║██╔════╝ 
+██║     ██║██╔██╗ ██║██║  ███╗██║  ███╗███████║███████║██║   ██║███████╗   ██║   ██║██╔██╗ ██║██║  ███╗
+██║     ██║██║╚██╗██║██║   ██║██║   ██║██╔══██║██╔══██║██║   ██║╚════██║   ██║   ██║██║╚██╗██║██║   ██║
+███████╗██║██║ ╚████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║╚██████╔╝███████║   ██║   ██║██║ ╚████║╚██████╔╝
+╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝
+    $r  Support YT Channel-> Aank is ME © 2022 $c https://aank.me/Youtube 
+          
+$endc$enda""";
+sleep 43200
